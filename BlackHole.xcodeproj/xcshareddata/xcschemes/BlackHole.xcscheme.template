@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D7477A81578168D00412279"
-               BuildableName = "MieruTalk-dev_Loopback.driver"
+               BuildableName = "${ASSEMBLY_NAME}_Loopback.driver"
                BlueprintName = "BlackHole"
                ReferencedContainer = "container:BlackHole.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D7477A81578168D00412279"
-            BuildableName = "MieruTalk-dev_Loopback.driver"
+            BuildableName = "${ASSEMBLY_NAME}_Loopback.driver"
             BlueprintName = "BlackHole"
             ReferencedContainer = "container:BlackHole.xcodeproj">
          </BuildableReference>
