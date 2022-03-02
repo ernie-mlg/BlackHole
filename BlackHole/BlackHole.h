@@ -126,12 +126,12 @@ static pthread_mutex_t              gPlugIn_StateMutex                  = PTHREA
 static UInt32                       gPlugIn_RefCount                    = 0;
 static AudioServerPlugInHostRef     gPlugIn_Host                        = NULL;
 
-#define                             kBox_UID                            "BlackHole%ich_UID"
+#define                             kBox_UID                            "MieruTalk-dev_UID"
 static CFStringRef                  gBox_Name                           = NULL;
 static Boolean                      gBox_Acquired                       = true;
 
-#define                             kDevice_UID                         "BlackHole%ich_UID"
-#define                             kDevice_ModelUID                    "BlackHole%ich_ModelUID"
+#define                             kDevice_UID                         "MieruTalk-dev_UID"
+#define                             kDevice_ModelUID                    "MieruTalk-dev_ModelUID"
 static pthread_mutex_t              gDevice_IOMutex                     = PTHREAD_MUTEX_INITIALIZER;
 static Float64                      gDevice_SampleRate                  = 44100.0;
 static UInt64                       gDevice_IOIsRunning                 = 0;
@@ -149,8 +149,8 @@ static const Float32                kVolume_MaxDB                       = 0.0;
 static Float32                      gVolume_Master_Value                = 1.0;
 static bool                         gMute_Master_Value                  = false;
 
-#define                             kDevice_Name                        "BlackHole %ich"
-#define                             kManufacturer_Name                  "Existential Audio Inc."
+#define                             kDevice_Name                        "MieruTalk-dev_Loopback"
+#define                             kManufacturer_Name                  "Ernie-MLG, inc."
 
 #define                             kLatency_Frame_Size                 0
 #define                             kNumber_Of_Channels                 2
