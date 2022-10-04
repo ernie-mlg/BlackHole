@@ -150,7 +150,7 @@ static Float32                      gVolume_Master_Value                = 1.0;
 static bool                         gMute_Master_Value                  = false;
 
 #define                             kDevice_Name                        "${ASSEMBLY_NAME}_Loopback"
-#define                             kManufacturer_Name                  "Ernie-MLG, inc."
+#define                             kManufacturer_Name                  "${APP_DEVELOPER}"
 
 #define                             kLatency_Frame_Size                 0
 #define                             kNumber_Of_Channels                 2
