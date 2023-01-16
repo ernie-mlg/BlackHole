@@ -149,7 +149,7 @@ static const Float32                kVolume_MaxDB                       = 0.0;
 static Float32                      gVolume_Master_Value                = 1.0;
 static bool                         gMute_Master_Value                  = false;
 
-#define                             kDevice_Name                        "${ASSEMBLY_NAME}_Loopback"
+#define                             kDevice_Name                        "${ASSEMBLY_NAME}_SpeakerCapture"
 #define                             kManufacturer_Name                  "${APP_DEVELOPER}"
 
 #define                             kLatency_Frame_Size                 0
