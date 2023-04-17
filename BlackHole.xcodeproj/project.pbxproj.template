@@ -50,7 +50,7 @@
 		3D88D48C285BBA5800629399 /* BlackHoleTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BlackHoleTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D88D48E285BBA5800629399 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		3D89662F2849BF1A002AB3F0 /* VERSION */ = {isa = PBXFileReference; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
-		3D89664D2849C318002AB3F0 /* BlackHole.driver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlackHole.driver; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D89664D2849C318002AB3F0 /* ${ASSEMBLY_NAME}_Loopback.driver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ${ASSEMBLY_NAME}_Loopback.driver; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D8966882849D45F002AB3F0 /* postinstall */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = postinstall; sourceTree = "<group>"; };
 		3D8966892849D45F002AB3F0 /* preinstall */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = preinstall; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,7 +104,7 @@
 		2D7477AA1578168D00412279 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3D89664D2849C318002AB3F0 /* BlackHole.driver */,
+				3D89664D2849C318002AB3F0 /* ${ASSEMBLY_NAME}_Loopback.driver */,
 				3D88D48C285BBA5800629399 /* BlackHoleTests */,
 			);
 			name = Products;
@@ -186,7 +186,7 @@
 			);
 			name = BlackHole;
 			productName = AudioNULLDriver;
-			productReference = 3D89664D2849C318002AB3F0 /* BlackHole.driver */;
+			productReference = 3D89664D2849C318002AB3F0 /* ${ASSEMBLY_NAME}_Loopback.driver */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -199,11 +199,12 @@
 				TargetAttributes = {
 					3D88D48B285BBA5800629399 = {
 						CreatedOnToolsVersion = 13.4;
-						DevelopmentTeam = Q5C99V536K;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = RF7WL335DU;
+						ProvisioningStyle = Manual;
 					};
 					3D89663D2849C318002AB3F0 = {
-						DevelopmentTeam = Q5C99V536K;
+						DevelopmentTeam = RF7WL335DU;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -457,7 +458,9 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -487,7 +490,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -521,7 +526,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -543,17 +550,19 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=0",
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MARKETING_VERSION = 0.5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = audio.existential.BlackHole;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
+				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = Release;
@@ -563,17 +572,19 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MARKETING_VERSION = 0.5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = audio.existential.BlackHole;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
+				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = Debug;
@@ -583,17 +594,19 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				DEVELOPMENT_TEAM = Q5C99V536K;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RF7WL335DU;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MARKETING_VERSION = 0.5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = audio.existential.BlackHole;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
+				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = "Debug-Opt";
