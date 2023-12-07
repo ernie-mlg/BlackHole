@@ -9,9 +9,14 @@ ASSEMBLY_NAME=$1
 UUID=$2
 DERIVEDDATAPATH=$3
 
+echo -------- BlackHole build.sh
+echo ASSEMBLY_NAME=$ASSEMBLY_NAME
+echo UUID=$UUID
+echo DERIVEDDATAPATH=$DERIVEDDATAPATH
+
 cat ./BlackHole/BlackHole.h.template                                            | envsubst > ./BlackHole/BlackHole.h
 cat ./BlackHole/BlackHole-Info.plist.template                                   | envsubst > ./BlackHole/BlackHole-Info.plist
 cat ./BlackHole.xcodeproj/project.pbxproj.template                              | envsubst > ./BlackHole.xcodeproj/project.pbxproj
 cat ./BlackHole.xcodeproj/xcshareddata/xcschemes/BlackHole.xcscheme.template    | envsubst > ./BlackHole.xcodeproj/xcshareddata/xcschemes/BlackHole.xcscheme
 
-xcodebuild -project ./BlackHole.xcodeproj -scheme BlackHole -configuration Release -derivedDataPath $DERIVEDDATAPATH
+xcodebuild -project ./BlackHole.xcodeproj -scheme BlackHole -configuration Release -derivedDataPath $DERIVEDDATAPATH -destination 'platform=macOS,arch=x86_64'
