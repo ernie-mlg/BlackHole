@@ -258,6 +258,7 @@ static pthread_mutex_t              gDevice_IOMutex                     = PTHREA
 static Float64                      gDevice_SampleRate                  = 48000.0;
 static Float64                      gDevice_RequestedSampleRate         = 0.0;
 static UInt64                       gDevice_IOIsRunning                 = 0;
+static UInt64                       gDevice2_IOIsRunning                = 0;
 static const UInt32                 kDevice_RingBufferSize              = 16384;
 static Float64                      gDevice_HostTicksPerFrame           = 0.0;
 static Float64                      gDevice_AdjustedTicksPerFrame       = 0.0;
@@ -325,7 +326,7 @@ static const UInt32                 kDevice_SampleRatesSize             = sizeof
 #define                             kBytes_Per_Channel                  (kBits_Per_Channel/ 8)
 #define                             kBytes_Per_Frame                    (kNumber_Of_Channels * kBytes_Per_Channel)
 #define                             kRing_Buffer_Frame_Size             ((65536 + kLatency_Frame_Size))
-static Float32*                     gRingBuffer;
+static Float32*                     gRingBuffer = NULL;
 
 
 //==================================================================================================
@@ -433,12 +434,12 @@ else                                                                  \
     return CFStringCreateWithCString(NULL, _string_fmt, kCFStringEncodingUTF8); \
 }
 
-static CFStringRef get_box_uid()          { RETURN_FORMATTED_STRING(kBox_UID) }
-static CFStringRef get_device_uid()       { RETURN_FORMATTED_STRING(kDevice_UID) }
-static CFStringRef get_device_name()      { RETURN_FORMATTED_STRING(kDevice_Name) }
-static CFStringRef get_device2_uid()       { RETURN_FORMATTED_STRING(kDevice2_UID) }
-static CFStringRef get_device2_name()      { RETURN_FORMATTED_STRING(kDevice2_Name) }
-static CFStringRef get_device_model_uid() { RETURN_FORMATTED_STRING(kDevice_ModelUID) }
+static CFStringRef get_box_uid(void)          { RETURN_FORMATTED_STRING(kBox_UID) }
+static CFStringRef get_device_uid(void)       { RETURN_FORMATTED_STRING(kDevice_UID) }
+static CFStringRef get_device_name(void)      { RETURN_FORMATTED_STRING(kDevice_Name) }
+static CFStringRef get_device2_uid(void)      { RETURN_FORMATTED_STRING(kDevice2_UID) }
+static CFStringRef get_device2_name(void)     { RETURN_FORMATTED_STRING(kDevice2_Name) }
+static CFStringRef get_device_model_uid(void) { RETURN_FORMATTED_STRING(kDevice_ModelUID) }
 
 // Volume conversions
 
@@ -1900,14 +1901,14 @@ static OSStatus BlackHole_GetBoxPropertyData(AudioServerPlugInDriverRef inDriver
         case kAudioObjectPropertyModelName:
             //  This is the human readable name of the maker of the box.
             FailWithAction(inDataSize < sizeof(CFStringRef), theAnswer = kAudioHardwareBadPropertySizeError, Done, "BlackHole_GetBoxPropertyData: not enough space for the return value of kAudioObjectPropertyManufacturer for the box");
-            *((CFStringRef*)outData) = CFSTR("Null Model");
+            *((CFStringRef*)outData) = CFSTR("BlackHole");
             *outDataSize = sizeof(CFStringRef);
             break;
             
         case kAudioObjectPropertyManufacturer:
             //  This is the human readable name of the maker of the box.
             FailWithAction(inDataSize < sizeof(CFStringRef), theAnswer = kAudioHardwareBadPropertySizeError, Done, "BlackHole_GetBoxPropertyData: not enough space for the return value of kAudioObjectPropertyManufacturer for the box");
-            *((CFStringRef*)outData) = CFSTR("Apple Inc.");
+            *((CFStringRef*)outData) = CFSTR("Existential Audio Inc.");
             *outDataSize = sizeof(CFStringRef);
             break;
             
@@ -1926,14 +1927,14 @@ static OSStatus BlackHole_GetBoxPropertyData(AudioServerPlugInDriverRef inDriver
         case kAudioObjectPropertySerialNumber:
             //  This is the human readable serial number of the box.
             FailWithAction(inDataSize < sizeof(CFStringRef), theAnswer = kAudioHardwareBadPropertySizeError, Done, "BlackHole_GetBoxPropertyData: not enough space for the return value of kAudioObjectPropertySerialNumber for the box");
-            *((CFStringRef*)outData) = CFSTR("00000001");
+            *((CFStringRef*)outData) = CFSTR("dd658747-4b9a-4de8-a001-c6a2ef1bb235");
             *outDataSize = sizeof(CFStringRef);
             break;
             
         case kAudioObjectPropertyFirmwareVersion:
             //  This is the human readable firmware version of the box.
             FailWithAction(inDataSize < sizeof(CFStringRef), theAnswer = kAudioHardwareBadPropertySizeError, Done, "BlackHole_GetBoxPropertyData: not enough space for the return value of kAudioObjectPropertyFirmwareVersion for the box");
-            *((CFStringRef*)outData) = CFSTR("1.0");
+            *((CFStringRef*)outData) = CFSTR("0.5.1");
             *outDataSize = sizeof(CFStringRef);
             break;
             
@@ -2596,11 +2597,26 @@ static OSStatus BlackHole_GetDevicePropertyData(AudioServerPlugInDriverRef inDri
             break;
 
         case kAudioDevicePropertyDeviceIsRunning:
-            //  This property returns whether or not IO is running for the device. Note that
-            //  we need to take both the state lock to check this value for thread safety.
+            //    This property returns whether or not IO is running for the device. Note that
+            //    we need to take both the state lock to check this value for thread safety.
             FailWithAction(inDataSize < sizeof(UInt32), theAnswer = kAudioHardwareBadPropertySizeError, Done, "BlackHole_GetDevicePropertyData: not enough space for the return value of kAudioDevicePropertyDeviceIsRunning for the device");
             pthread_mutex_lock(&gPlugIn_StateMutex);
-            *((UInt32*)outData) = ((gDevice_IOIsRunning > 0) > 0) ? 1 : 0;
+            if (inObjectID == kObjectID_Device) {
+                *((UInt32*)outData) = ((gDevice_IOIsRunning > 0) > 0) ? 1 : 0;
+            }
+            
+            switch (inObjectID) {
+                case kObjectID_Device:
+                    *((UInt32*)outData) = ((gDevice_IOIsRunning > 0) > 0) ? 1 : 0;
+                    break;
+                case kObjectID_Device2:
+                    *((UInt32*)outData) = ((gDevice2_IOIsRunning > 0) > 0) ? 1 : 0;
+                    break;
+                default:
+                    *((UInt32*)outData) = 0;
+                    break;
+            }
+            
             pthread_mutex_unlock(&gPlugIn_StateMutex);
             *outDataSize = sizeof(UInt32);
             break;
@@ -4295,33 +4311,26 @@ static OSStatus BlackHole_StartIO(AudioServerPlugInDriverRef inDriver, AudioObje
     //  check the arguments
     FailWithAction(inDriver != gAudioServerPlugInDriverRef, theAnswer = kAudioHardwareBadObjectError, Done, "BlackHole_StartIO: bad driver reference");
     FailWithAction(inDeviceObjectID != kObjectID_Device && inDeviceObjectID != kObjectID_Device2, theAnswer = kAudioHardwareBadObjectError, Done, "BlackHole_StartIO: bad device ID");
+    FailWithAction(inDeviceObjectID == kObjectID_Device && gDevice_IOIsRunning == UINT64_MAX, theAnswer = kAudioHardwareIllegalOperationError, Done, "BlackHole_StartIO: overflow error.");
+    FailWithAction(inDeviceObjectID == kObjectID_Device2 && gDevice2_IOIsRunning == UINT64_MAX, theAnswer = kAudioHardwareIllegalOperationError, Done, "BlackHole_StartIO: overflow error.");
 
     //  we need to hold the state lock
     pthread_mutex_lock(&gPlugIn_StateMutex);
     
-    //  figure out what we need to do
-    if(gDevice_IOIsRunning == UINT64_MAX)
+    
+    if (inDeviceObjectID == kObjectID_Device) { gDevice_IOIsRunning += 1; }
+    if (inDeviceObjectID == kObjectID_Device2) { gDevice2_IOIsRunning += 1; }
+    
+    // allocate ring buffer
+    if ((gDevice_IOIsRunning || gDevice2_IOIsRunning) && gRingBuffer == NULL)
     {
-        //  overflowing is an error
-        theAnswer = kAudioHardwareIllegalOperationError;
-    }
-    else if(gDevice_IOIsRunning == 0)
-    {
-        //  We need to start the hardware, which in this case is just anchoring the time line.
-        gDevice_IOIsRunning = 1;
         gDevice_NumberTimeStamps = 0;
         gDevice_AnchorSampleTime = 0;
         gDevice_AnchorHostTime = mach_absolute_time();
         gDevice_PreviousTicks = 0;
-        
-        // allocate ring buffer
         gRingBuffer = calloc(kRing_Buffer_Frame_Size * kNumber_Of_Channels, sizeof(Float32));
     }
-    else
-    {
-        //  IO is already running, so just bump the counter
-        ++gDevice_IOIsRunning;
-    }
+    
     
     //  unlock the state lock
     pthread_mutex_unlock(&gPlugIn_StateMutex);
@@ -4343,26 +4352,21 @@ static OSStatus BlackHole_StopIO(AudioServerPlugInDriverRef inDriver, AudioObjec
     //  check the arguments
     FailWithAction(inDriver != gAudioServerPlugInDriverRef, theAnswer = kAudioHardwareBadObjectError, Done, "BlackHole_StopIO: bad driver reference");
     FailWithAction(inDeviceObjectID != kObjectID_Device && inDeviceObjectID != kObjectID_Device2, theAnswer = kAudioHardwareBadObjectError, Done, "BlackHole_StopIO: bad device ID");
+    FailWithAction(inDeviceObjectID == kObjectID_Device && gDevice_IOIsRunning == 0, theAnswer = kAudioHardwareIllegalOperationError, Done, "BlackHole_StartIO: underflow error.");
+    FailWithAction(inDeviceObjectID == kObjectID_Device2 && gDevice2_IOIsRunning == 0, theAnswer = kAudioHardwareIllegalOperationError, Done, "BlackHole_StartIO: underflow error.");
 
     //  we need to hold the state lock
     pthread_mutex_lock(&gPlugIn_StateMutex);
     
-    //  figure out what we need to do
-    if(gDevice_IOIsRunning == 0)
+    
+    if (inDeviceObjectID == kObjectID_Device) { gDevice_IOIsRunning -= 1; }
+    if (inDeviceObjectID == kObjectID_Device2) { gDevice2_IOIsRunning -= 1; }
+    
+    // free the ring buffer
+    if (!gDevice_IOIsRunning && !gDevice2_IOIsRunning && gRingBuffer != NULL)
     {
-        //  underflowing is an error
-        theAnswer = kAudioHardwareIllegalOperationError;
-    }
-    else if(gDevice_IOIsRunning == 1)
-    {
-        //  We need to stop the hardware, which in this case means that there's nothing to do.
-        gDevice_IOIsRunning = 0;
         free(gRingBuffer);
-    }
-    else
-    {
-        //  IO is still running, so just bump the counter
-        --gDevice_IOIsRunning;
+        gRingBuffer = NULL;
     }
     
     //  unlock the state lock

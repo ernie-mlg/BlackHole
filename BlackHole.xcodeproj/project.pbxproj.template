@@ -177,7 +177,6 @@
 			buildPhases = (
 				3D89663E2849C318002AB3F0 /* Sources */,
 				3D8966402849C318002AB3F0 /* Frameworks */,
-				3D8966442849C318002AB3F0 /* ShellScript */,
 				3D8966452849C318002AB3F0 /* Resources */,
 			);
 			buildRules = (
@@ -556,10 +555,9 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = Release;
@@ -578,10 +576,9 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = Debug;
@@ -600,10 +597,9 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = driver;
 			};
 			name = "Debug-Opt";
