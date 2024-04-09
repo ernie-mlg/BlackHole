@@ -241,26 +241,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		3D8966442849C318002AB3F0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\n#read version number from VERSION in project root\nVERSION=`git describe --tags --abbrev=0`\nBUILD=`git rev-list $(git rev-parse --abbrev-ref HEAD) | wc -l | awk '{ print $1 }'`\n\necho \"${VERSION} (${BUILD})\"\n\nagvtool new-marketing-version ${VERSION}\nagvtool new-version -all ${BUILD}\n\nexit 0\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		3D88D488285BBA5800629399 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -555,7 +535,7 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
 				WRAPPER_EXTENSION = driver;
@@ -576,7 +556,7 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
 				WRAPPER_EXTENSION = driver;
@@ -597,7 +577,7 @@
 				);
 				INFOPLIST_FILE = BlackHole/BlackHole.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Ernie.${ASSEMBLY_NAME};
 				PRODUCT_NAME = ${ASSEMBLY_NAME}_Loopback;
 				WRAPPER_EXTENSION = driver;
